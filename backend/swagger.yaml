@@ -1,0 +1,443 @@
+openapi: 3.0.0
+info:
+  title: 设备资产管理系统 API
+  description: 设备资产管理系统的 RESTful API 文档，包含资产管理、通知管理等功能
+  version: 1.0.0
+servers:
+  - url: http://localhost:4000
+    description: 本地开发服务器
+
+paths:
+  # 通知相关 API
+  /api/notifications:
+    get:
+      summary: 获取所有通知
+      description: 返回系统中的所有通知列表
+      tags:
+        - 通知管理
+      responses:
+        '200':
+          description: 成功获取通知列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Notification'
+
+  /api/notifications/read_all:
+    post:
+      summary: 将所有通知标记为已读
+      description: 将系统中的所有通知状态更新为已读
+      tags:
+        - 通知管理
+      responses:
+        '200':
+          description: 成功将所有通知标记为已读
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "All notifications marked as read"
+
+  /api/notifications/{id}/read:
+    post:
+      summary: 将单个通知标记为已读
+      description: 根据ID将指定通知标记为已读
+      tags:
+        - 通知管理
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 通知ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功将通知标记为已读
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Notification marked as read"
+        '404':
+          description: 通知不存在
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Notification not found"
+
+  /api/notifications/{id}:
+    delete:
+      summary: 删除通知
+      description: 根据ID删除指定通知
+      tags:
+        - 通知管理
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 通知ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功删除通知
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Notification deleted"
+        '404':
+          description: 通知不存在
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Notification not found"
+
+  /api/notifications/unread/count:
+    get:
+      summary: 获取未读通知数量
+      description: 返回系统中未读通知的总数
+      tags:
+        - 通知管理
+      responses:
+        '200':
+          description: 成功获取未读通知数量
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 3
+
+  # 资产相关 API
+  /api/assets:
+    get:
+      summary: 获取资产列表
+      description: 返回系统中的所有资产
+      tags:
+        - 资产管理
+      responses:
+        '200':
+          description: 成功获取资产列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asset'
+    post:
+      summary: 创建新资产
+      description: 在系统中创建新的资产记录
+      tags:
+        - 资产管理
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Asset'
+      responses:
+        '201':
+          description: 资产创建成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+
+  /api/assets/{id}:
+    get:
+      summary: 获取资产详情
+      description: 根据ID获取指定资产的详细信息
+      tags:
+        - 资产管理
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 资产ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功获取资产详情
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '404':
+          description: 资产不存在
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Not found"
+
+  /api/assets/{id}/assign:
+    post:
+      summary: 分配资产
+      description: 将资产分配给指定用户或部门
+      tags:
+        - 资产管理
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 资产ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignRequest'
+      responses:
+        '200':
+          description: 资产分配成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Assigned"
+        '500':
+          description: 分配过程中出现错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error assigning asset"
+
+  /api/assets/{id}/repair:
+    post:
+      summary: 记录资产维修
+      description: 记录资产的维修信息
+      tags:
+        - 资产管理
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 资产ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RepairRequest'
+      responses:
+        '200':
+          description: 维修记录成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Repair logged"
+        '500':
+          description: 记录过程中出现错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Error logging repair"
+
+  /api/assets/{id}/logs:
+    get:
+      summary: 获取资产操作日志
+      description: 返回指定资产的所有操作历史日志
+      tags:
+        - 资产管理
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: 资产ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 成功获取操作日志
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AssetLog'
+
+  # 页面相关路由
+  /login:
+    get:
+      summary: 登录页面
+      description: 返回系统登录页面
+      tags:
+        - 页面路由
+      responses:
+        '200':
+          description: 成功返回登录页面
+
+  /:
+    get:
+      summary: 首页
+      description: 返回系统首页或仪表盘
+      tags:
+        - 页面路由
+      responses:
+        '200':
+          description: 成功返回首页
+
+components:
+  schemas:
+    # 通知模型
+    Notification:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 通知唯一标识符
+        title:
+          type: string
+          description: 通知标题
+        message:
+          type: string
+          description: 通知内容
+        type:
+          type: string
+          description: 通知类型 (info, success, warning)
+          enum: [info, success, warning]
+        read:
+          type: boolean
+          description: 是否已读
+        timestamp:
+          type: string
+          format: date-time
+          description: 通知时间戳
+
+    # 资产模型
+    Asset:
+      type: object
+      properties:
+        asset_id:
+          type: string
+          description: 资产唯一标识符
+        name:
+          type: string
+          description: 资产名称
+        model:
+          type: string
+          description: 资产型号
+        category:
+          type: string
+          description: 资产类别
+        purchaseDate:
+          type: string
+          format: date-time
+          description: 购买日期
+        purchaseDept:
+          type: string
+          description: 采购部门
+        status:
+          type: string
+          description: 资产状态
+          default: "in_stock"
+
+    # 资产日志模型
+    AssetLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: 日志ID
+        assetId:
+          type: string
+          description: 资产ID
+        actionType:
+          type: string
+          description: 操作类型
+        operator:
+          type: string
+          description: 操作人
+        targetDept:
+          type: string
+          description: 目标部门
+        targetUser:
+          type: string
+          description: 目标用户
+        locationCode:
+          type: string
+          description: 位置编码
+        timestamp:
+          type: string
+          format: date-time
+          description: 操作时间
+        remark:
+          type: string
+          description: 备注
+
+    # 资产分配请求模型
+    AssignRequest:
+      type: object
+      properties:
+        targetUser:
+          type: string
+          description: 目标用户
+        targetDept:
+          type: string
+          description: 目标部门
+        locationCode:
+          type: string
+          description: 位置编码
+        operator:
+          type: string
+          description: 操作人
+
+    # 维修请求模型
+    RepairRequest:
+      type: object
+      properties:
+        issue:
+          type: string
+          description: 问题描述
+        repairDate:
+          type: string
+          description: 维修日期
+        result:
+          type: string
+          description: 维修结果

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>设备资产管理系统 - 首页</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .logout-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>设备资产管理系统</h1>
+        <a href="/logout"><button class="logout-btn">退出登录</button></a>
+    </div>
+    
+    <div class="content">
+        <h2>欢迎使用设备资产管理系统</h2>
+        <p>登录成功！您已使用管理员账号登录系统。</p>
+        <p>系统功能：</p>
+        <ul>
+            <li>资产管理</li>
+            <li>设备分配</li>
+            <li>维修记录</li>
+            <li>使用日志</li>
+        </ul>
+        <p><strong>注意：</strong>系统正在运行中，您可以通过API访问资产数据。</p>
+    </div>
+</body>
+</html>

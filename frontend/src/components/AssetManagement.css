@@ -1,0 +1,275 @@
+/* AssetManagement组件样式 */
+.asset-management {
+  color: #333;
+}
+
+.asset-management h2 {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  color: #333;
+}
+
+/* 操作按钮区域 */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  padding: 8px 16px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #40a9ff;
+}
+
+.btn-secondary {
+  padding: 8px 16px;
+  background-color: white;
+  color: #333;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+/* 筛选条件区域 */
+.filter-section {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-input,
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 200px;
+  transition: border-color 0.3s;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* 资产表格 */
+.asset-table-container {
+  background: white;
+  border-radius: 8px;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.asset-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.asset-table th,
+.asset-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.asset-table th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.asset-table td {
+  font-size: 14px;
+  color: #666;
+}
+
+.asset-table tr:hover {
+  background-color: #fafafa;
+}
+
+/* 状态标签 */
+.status-tag {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-stock {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.status-use {
+  background-color: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+.status-repair {
+  background-color: #fffbe6;
+  color: #faad14;
+  border: 1px solid #ffe58f;
+}
+
+.status-scrap {
+  background-color: #fff2f0;
+  color: #ff4d4f;
+  border: 1px solid #ffccc7;
+}
+
+/* 操作按钮 */
+.action-cell {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s;
+}
+
+.btn-view {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.btn-view:hover {
+  background-color: #bae7ff;
+}
+
+.btn-edit {
+  background-color: #f6ffed;
+  color: #52c41a;
+}
+
+.btn-edit:hover {
+  background-color: #d9f7be;
+}
+
+.btn-qrcode {
+  background-color: #fff7e6;
+  color: #fa8c16;
+}
+
+.btn-qrcode:hover {
+  background-color: #ffe7ba;
+}
+
+/* 空状态提示 */
+.empty-message {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-size: 14px;
+}
+
+/* 分页控件 */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-page {
+  padding: 6px 12px;
+  border: 1px solid #d9d9d9;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.btn-page:hover:not(:disabled) {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+.btn-page.active {
+  background-color: #1890ff;
+  color: white;
+  border-color: #1890ff;
+}
+
+.btn-page:disabled {
+  cursor: not-allowed;
+  color: #d9d9d9;
+  border-color: #f0f0f0;
+}
+
+.page-info {
+  margin-left: 16px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 加载状态 */
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .asset-table {
+    font-size: 12px;
+  }
+  
+  .asset-table th,
+  .asset-table td {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .filter-section {
+    flex-direction: column;
+  }
+  
+  .filter-input,
+  .filter-select {
+    width: 100%;
+  }
+  
+  .asset-table-container {
+    overflow-x: auto;
+  }
+  
+  .action-buttons {
+    flex-wrap: wrap;
+  }
+}

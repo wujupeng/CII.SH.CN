@@ -1,0 +1,349 @@
+/* AllocationManagement组件样式 */
+.allocation-management {
+  color: #333;
+}
+
+.allocation-management h2 {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.allocation-management h3 {
+  margin: 20px 0 15px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.allocation-management h4 {
+  margin: 0 0 15px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+/* 标签页 */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  color: #1890ff;
+}
+
+.tab-btn.active {
+  color: #1890ff;
+  border-bottom-color: #1890ff;
+}
+
+/* 标签页内容 */
+.tab-content {
+  min-height: 400px;
+}
+
+/* 扫码区域 */
+.scan-section {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.scan-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.scan-btn {
+  align-self: flex-start;
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+.scan-result {
+  padding: 12px;
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #52c41a;
+}
+
+/* 资产表单卡片 */
+.asset-form-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.asset-info {
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #fafafa;
+  border-radius: 4px;
+}
+
+.asset-info p {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 表单组 */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+/* 手动分配区域 */
+.manual-allocation {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 用户资产列表 */
+.user-assets {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.assets-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.asset-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #f0f0f0;
+  border-radius: 4px;
+}
+
+.asset-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.asset-details strong {
+  color: #333;
+  font-size: 14px;
+}
+
+.asset-details span {
+  color: #666;
+  font-size: 14px;
+}
+
+.return-btn {
+  padding: 6px 16px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.return-btn:hover {
+  background-color: #40a9ff;
+}
+
+/* 历史记录筛选 */
+.filter-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-input,
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.search-btn {
+  padding: 8px 20px;
+}
+
+/* 历史记录表 */
+.history-table-container {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table th,
+.history-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.history-table th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.history-table td {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 操作标签 */
+.operation-tag {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.operation-allocate {
+  background-color: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+.operation-return {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+/* 分页控件 */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-page {
+  padding: 6px 12px;
+  border: 1px solid #d9d9d9;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.btn-page:hover:not(:disabled) {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+.btn-page.active {
+  background-color: #1890ff;
+  color: white;
+  border-color: #1890ff;
+}
+
+.btn-page:disabled {
+  cursor: not-allowed;
+  color: #d9d9d9;
+  border-color: #f0f0f0;
+}
+
+.page-info {
+  margin-left: 16px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .filter-section {
+    flex-wrap: wrap;
+  }
+  
+  .filter-input,
+  .filter-select {
+    width: 100%;
+  }
+  
+  .history-table-container {
+    overflow-x: auto;
+  }
+  
+  .tabs {
+    overflow-x: auto;
+  }
+  
+  .tab-btn {
+    min-width: 100px;
+  }
+}

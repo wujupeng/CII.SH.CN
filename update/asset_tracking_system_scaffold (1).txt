@@ -1,0 +1,141 @@
+# Frontend React Application — Asset Tracking System (with Notifications & Alerts Center)
+
+Now includes **NotificationsCenter** and **AlertsFeed** for real-time system updates.
+
+---
+
+## File structure
+
+```
+frontend/
+├─ src/
+│  ├─ main.jsx
+│  ├─ App.jsx
+│  ├─ components/
+│  │  ├─ Navbar.jsx
+│  │  ├─ Dashboard.jsx
+│  │  ├─ AssetList.jsx
+│  │  ├─ QRScanner.jsx
+│  │  ├─ AssetDetailModal.jsx
+│  │  ├─ AllocationForm.jsx
+│  │  ├─ RepairForm.jsx
+│  │  ├─ RepairList.jsx
+│  │  ├─ InventoryCheckPage.jsx
+│  │  ├─ InventoryScanner.jsx
+│  │  ├─ ReportingDashboard.jsx
+│  │  ├─ AnalyticsCharts.jsx
+│  │  ├─ ReportExport.jsx
+│  │  ├─ UserManagement.jsx
+│  │  ├─ RoleManagement.jsx
+│  │  ├─ DepartmentManagement.jsx
+│  │  ├─ AuditLogsPage.jsx
+│  │  ├─ SecurityEventsPage.jsx
+│  │  ├─ NotificationsCenter.jsx
+│  │  └─ AlertsFeed.jsx
+│  └─ styles/index.css
+```
+
+---
+
+## src/components/NotificationsCenter.jsx
+
+```jsx
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import AlertsFeed from './AlertsFeed';
+
+export default function NotificationsCenter() {
+  const [notifications, setNotifications] = useState([]);
+  const [unread, setUnread] = useState(0);
+
+  const fetchNotifications = async () => {
+    const res = await axios.get('/api/notifications');
+    setNotifications(res.data);
+    setUnread(res.data.filter(n => !n.read).length);
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 10000); // 10s polling
+    return () => clearInterval(interval);
+  }, []);
+
+  const markAllRead = async () => {
+    await axios.post('/api/notifications/read_all');
+    fetchNotifications();
+  };
+
+  return (
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-semibold">Notifications Center</h2>
+        <button onClick={markAllRead} className="text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+          Mark All as Read ({unread})
+        </button>
+      </div>
+
+      <AlertsFeed notifications={notifications} />
+    </div>
+  );
+}
+```
+
+---
+
+## src/components/AlertsFeed.jsx
+
+```jsx
+import React from 'react';
+import { Bell, AlertTriangle, CheckCircle, Info } from 'lucide-react';
+
+export default function AlertsFeed({ notifications = [] }) {
+  const getIcon = (type) => {
+    switch (type) {
+      case 'warning': return <AlertTriangle className="text-yellow-600" size={18} />;
+      case 'success': return <CheckCircle className="text-green-600" size={18} />;
+      case 'info': return <Info className="text-blue-600" size={18} />;
+      default: return <Bell className="text-gray-600" size={18} />;
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      {notifications.length === 0 && (
+        <p className="text-gray-500 text-sm text-center py-4">No notifications</p>
+      )}
+      {notifications.map((n, i) => (
+        <div
+          key={i}
+          className={`flex items-start gap-3 p-3 border rounded-lg shadow-sm ${n.read ? 'bg-gray-50' : 'bg-white'}`}
+        >
+          {getIcon(n.type)}
+          <div className="flex-1">
+            <p className="text-sm font-medium">{n.title}</p>
+            <p className="text-xs text-gray-600">{n.message}</p>
+            <p className="text-[11px] text-gray-400 mt-1">{new Date(n.timestamp).toLocaleString()}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
+---
+
+## Example API (expected backend endpoints)
+
+| Endpoint | Method | Description |
+|-----------|---------|-------------|
+| `/api/notifications` | GET | Fetch all notifications |
+| `/api/notifications/read_all` | POST | Mark all notifications as read |
+| `/api/notifications/new` | WebSocket / Push | Receive live updates |
+
+---
+
+✅ **New Features Added:**
+- **NotificationsCenter** — central dashboard for messages and alerts
+- **AlertsFeed** — dynamic feed with categorized alerts (info/warning/success)
+- Supports **auto-refresh** and backend integration via **polling or WebSocket**
+
+**Next Step:** Integrate **WebSocket real-time updates** and **user-specific alert preferences** (sound, email, mobile push).

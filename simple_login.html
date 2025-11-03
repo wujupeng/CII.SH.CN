@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设备资产管理系统 - 登录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            background: #5a67d8;
+        }
+        
+        .login-btn:disabled {
+            background: #a0aec0;
+            cursor: not-allowed;
+        }
+        
+        .error-message {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .login-tips {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e1e5e9;
+        }
+        
+        .login-tips p {
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% {
+                content: '';
+            }
+            40% {
+                content: '.';
+            }
+            60% {
+                content: '..';
+            }
+            80%, 100% {
+                content: '...';
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>设备资产管理系统 - 登录</h2>
+        <form id="loginForm">
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="请输入用户名"
+                    autocomplete="username"
+                />
+            </div>
+            
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="请输入密码"
+                    autocomplete="current-password"
+                />
+            </div>
+
+            <button type="submit" id="loginBtn" class="login-btn">登录</button>
+        </form>
+        
+        <div class="login-tips">
+            <p>提示：演示环境用户名密码可输入任意值</p>
+            <p>管理员权限：使用 admin 用户名</p>
+            <p>普通用户：使用任意非admin用户名</p>
+            <p>后端API地址：http://localhost:9191</p>
+            <p style="color: #e53e3e; font-weight: 500;">注意：如遇500错误，系统将提供模拟登录选项</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const loginBtn = document.getElementById('loginBtn');
+            
+            if (!username || !password) {
+                errorMessage.textContent = '请输入用户名和密码';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            errorMessage.style.display = 'none';
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span class="loading-dots"></span> <span>登录中</span>';
+            
+            try {
+                const response = await fetch('http://localhost:9191/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
+                });
+                
+                if (!response.ok) {
+                    let errorMsg = '登录失败，请稍后重试';
+                    if (response.status === 500) {
+                        errorMsg = '服务器内部错误(500)，可能是数据库连接问题';
+                    } else if (response.status === 401) {
+                        errorMsg = '用户名或密码错误';
+                    }
+                    throw new Error(errorMsg);
+                }
+                
+                const data = await response.json();
+                
+                // 保存token
+                if (data.token) {
+                    localStorage.setItem('authToken', data.token);
+                }
+                
+                // 显示成功消息
+                alert('登录成功！系统正在跳转...');
+                
+                // 跳转到首页或仪表板
+                window.location.href = 'http://localhost:9191';
+            } catch (err) {
+                errorMessage.textContent = err.message || '登录失败，请检查用户名和密码';
+                errorMessage.style.display = 'block';
+                
+                // 由于后端API可能返回500错误，我们提供模拟登录功能
+                setTimeout(() => {
+                    if (confirm('API调用失败，是否使用模拟登录模式？\n\n模拟登录将允许您体验登录流程，但实际功能需要后端API正常工作。')) {
+                        const role = username === 'admin' ? '管理员' : '普通用户';
+                        alert(`模拟登录成功！您已以"${username}"身份(${role})登录。\n\n系统提示：\n1. 这是模拟环境，仅演示登录流程\n2. 完整功能需要后端API正常工作\n3. 数据库可能需要初始化`);
+                        localStorage.setItem('mockUser', username);
+                        localStorage.setItem('mockUserRole', username === 'admin' ? 'admin' : 'employee');
+                    }
+                }, 500);
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = '登录';
+            }
+        });
+        
+        // 自动填充示例账号
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = 'admin';
+        });
+    </script>
+</body>
+</html>

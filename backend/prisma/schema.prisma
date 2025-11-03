@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Asset {
+  asset_id     String   @id @db.VarChar(32)
+  name         String   @db.VarChar(100)
+  model        String?  @db.VarChar(100)
+  category     String?  @db.VarChar(50)
+  purchaseDate DateTime?
+  purchaseDept String?  @db.VarChar(50)
+  status       String   @default("in_stock")
+  logs         AssetLog[]
+  repairs      Repair[]
+}
+
+model Location {
+  id          Int     @id @default(autoincrement())
+  locationCode String  @unique @db.VarChar(50)
+  name        String  @db.VarChar(100)
+  address     String?
+  departmentId Int?
+}
+
+model Department {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(100)
+  parentId Int?
+}
+
+model User {
+  id          Int    @id @default(autoincrement())
+  name        String @db.VarChar(100)
+  departmentId Int?
+  email       String @unique
+  role        String
+}
+
+model AssetLog {
+  id           Int      @id @default(autoincrement())
+  assetId      String
+  actionType   String
+  operator     String?
+  targetDept   String?
+  targetUser   String?
+  locationCode String?
+  timestamp    DateTime @default(now())
+  remark       String?
+
+  Asset Asset @relation(fields: [assetId], references: [asset_id])
+}
+
+model Repair {
+  id         Int      @id @default(autoincrement())
+  assetId    String
+  issue      String?
+  repairDate DateTime?
+  result     String?
+
+  Asset Asset @relation(fields: [assetId], references: [asset_id])
+}

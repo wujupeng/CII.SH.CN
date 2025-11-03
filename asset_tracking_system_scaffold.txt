@@ -1,0 +1,409 @@
+# Asset Tracking & Allocation System — Generated Project Scaffold
+
+This single-file scaffold contains backend (Express + Prisma + PostgreSQL), frontend (React + Tailwind), OpenAPI (swagger.yaml), and database migration snippets. Paste files into separate files in your project.
+
+---
+
+## Project structure
+
+```
+asset-tracking/
+├─ backend/
+│  ├─ package.json
+│  ├─ prisma/
+│  │  └─ schema.prisma
+│  ├─ migrations/
+│  ├─ src/
+│  │  ├─ index.js
+│  │  ├─ app.js
+│  │  ├─ routes/
+│  │  │  └─ assets.js
+│  │  ├─ controllers/
+│  │  │  └─ assetController.js
+│  │  ├─ services/
+│  │  └─ middlewares/
+│  └─ .env
+├─ frontend/
+│  ├─ package.json
+│  ├─ tailwind.config.cjs
+│  ├─ postcss.config.cjs
+│  └─ src/
+│     ├─ main.jsx
+│     ├─ App.jsx
+│     ├─ components/
+│     │  ├─ QRScanner.jsx
+│     │  ├─ AssetList.jsx
+│     │  ├─ AssetDetail.jsx
+│     │  └─ AllocationForm.jsx
+│     └─ styles/index.css
+├─ swagger/
+│  └─ swagger.yaml
+└─ README.md
+```
+
+---
+
+## Backend: package.json (snippet)
+
+```json
+{
+  "name": "asset-tracking-backend",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node src/index.js",
+    "migrate": "prisma migrate dev",
+    "generate": "prisma generate"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "@prisma/client": "^5.0.0",
+    "prisma": "^5.0.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "jsonwebtoken": "^9.0.0",
+    "bcryptjs": "^2.4.3"
+  }
+}
+```
+
+### prisma/schema.prisma
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Asset {
+  asset_id     String   @id @db.VarChar(32)
+  name         String   @db.VarChar(100)
+  model        String?  @db.VarChar(100)
+  category     String?  @db.VarChar(50)
+  purchaseDate DateTime?
+  purchaseDept String?  @db.VarChar(50)
+  status       String   @default("in_stock")
+  logs         AssetLog[]
+  repairs      Repair[]
+}
+
+model Location {
+  id          Int     @id @default(autoincrement())
+  locationCode String  @unique @db.VarChar(50)
+  name        String  @db.VarChar(100)
+  address     String?
+  departmentId Int?
+}
+
+model Department {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(100)
+  parentId Int?
+}
+
+model User {
+  id          Int    @id @default(autoincrement())
+  name        String @db.VarChar(100)
+  departmentId Int?
+  email       String @unique
+  role        String
+}
+
+model AssetLog {
+  id           Int      @id @default(autoincrement())
+  assetId      String
+  actionType   String
+  operator     String?
+  targetDept   String?
+  targetUser   String?
+  locationCode String?
+  timestamp    DateTime @default(now())
+  remark       String?
+
+  Asset Asset @relation(fields: [assetId], references: [asset_id])
+}
+
+model Repair {
+  id         Int      @id @default(autoincrement())
+  assetId    String
+  issue      String?
+  repairDate DateTime?
+  result     String?
+
+  Asset Asset @relation(fields: [assetId], references: [asset_id])
+}
+```
+
+---
+
+## Backend: basic Express app (src/index.js + src/app.js)
+
+```js
+// src/index.js
+require('dotenv').config();
+const app = require('./app');
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+
+// src/app.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const assetsRouter = require('./routes/assets');
+
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+app.use('/api/assets', assetsRouter);
+
+module.exports = app;
+```
+
+### Route & Controller skeleton
+
+```js
+// src/routes/assets.js
+const express = require('express');
+const router = express.Router();
+const assetController = require('../controllers/assetController');
+
+router.get('/', assetController.list);
+router.post('/', assetController.create);
+router.get('/:id', assetController.getById);
+router.post('/:id/assign', assetController.assign);
+router.post('/:id/repair', assetController.repair);
+router.get('/:id/logs', assetController.logs);
+
+module.exports = router;
+
+// src/controllers/assetController.js
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+module.exports = {
+  list: async (req, res) => {
+    const assets = await prisma.asset.findMany();
+    res.json(assets);
+  },
+  create: async (req, res) => {
+    const data = req.body;
+    // expect asset_id provided or generated on server
+    const asset = await prisma.asset.create({ data });
+    res.status(201).json(asset);
+  },
+  getById: async (req, res) => {
+    const id = req.params.id;
+    const asset = await prisma.asset.findUnique({ where: { asset_id: id } });
+    if (!asset) return res.status(404).json({ message: 'Not found' });
+    res.json(asset);
+  },
+  assign: async (req, res) => {
+    const id = req.params.id;
+    const { targetUser, targetDept, locationCode, operator } = req.body;
+    // update status and create log
+    await prisma.assetLog.create({ data: {
+      assetId: id, actionType: 'allocated', operator, targetDept, targetUser, locationCode
+    }});
+    await prisma.asset.update({ where: { asset_id: id }, data: { status: 'in_use' }});
+    res.json({ message: 'Assigned' });
+  },
+  repair: async (req, res) => {
+    const id = req.params.id;
+    const { issue, repairDate, result } = req.body;
+    await prisma.repair.create({ data: { assetId: id, issue, repairDate: repairDate || null, result } });
+    await prisma.asset.update({ where: { asset_id: id }, data: { status: 'repair' }});
+    res.json({ message: 'Repair logged' });
+  },
+  logs: async (req, res) => {
+    const id = req.params.id;
+    const logs = await prisma.assetLog.findMany({ where: { assetId: id } });
+    res.json(logs);
+  }
+}
+```
+
+---
+
+## Frontend: package.json (snippet)
+
+```json
+{
+  "name": "asset-tracking-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "vite": "^5.0.0",
+    "axios": "^1.4.0",
+    "qrcode.react": "^1.0.0",
+    "react-qr-reader": "^3.0.0"
+  },
+  "scripts": {
+    "dev": "vite"
+  }
+}
+```
+
+### src/main.jsx & App.jsx
+
+```jsx
+// src/main.jsx
+import React from 'react'
+import { createRoot } from 'react-dom/client'
+import App from './App'
+import './styles/index.css'
+
+createRoot(document.getElementById('root')).render(<App />)
+
+// src/App.jsx
+import React from 'react'
+import AssetList from './components/AssetList'
+import QRScanner from './components/QRScanner'
+
+export default function App(){
+  return (
+    <div className="p-4">
+      <h1 className="text-2xl font-bold">Asset Tracking Dashboard</h1>
+      <div className="grid grid-cols-3 gap-4 mt-4">
+        <div className="col-span-2"><AssetList/></div>
+        <div><QRScanner/></div>
+      </div>
+    </div>
+  )
+}
+```
+
+### QRScanner.jsx (skeleton)
+
+```jsx
+import React, { useState } from 'react'
+import { QrReader } from 'react-qr-reader'
+import axios from 'axios'
+
+export default function QRScanner(){
+  const [data, setData] = useState(null)
+  const handleResult = async (result) => {
+    if (!result) return;
+    try{
+      const parsed = JSON.parse(result?.text || result)
+      const id = parsed.asset_id || result?.text
+      const resp = await axios.get(`/api/assets/${id}`)
+      setData(resp.data)
+    }catch(e){
+      console.error(e)
+      setData({ error: 'Invalid QR or asset not found' })
+    }
+  }
+
+  return (
+    <div>
+      <h2 className="font-semibold mb-2">Scan QR</h2>
+      <div className="border p-2">
+        <QrReader onResult={(res)=>{ if(res) handleResult(res) }} />
+      </div>
+      <pre className="mt-2">{JSON.stringify(data, null, 2)}</pre>
+    </div>
+  )
+}
+```
+
+---
+
+## Swagger / OpenAPI (swagger/swagger.yaml)
+
+```yaml
+openapi: 3.0.1
+info:
+  title: Asset Tracking API
+  version: 1.0.0
+servers:
+  - url: http://localhost:4000
+paths:
+  /api/assets:
+    get:
+      summary: List all assets
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Create an asset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Asset'
+      responses:
+        '201':
+          description: Created
+  /api/assets/{id}:
+    get:
+      summary: Get asset details
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+components:
+  schemas:
+    Asset:
+      type: object
+      properties:
+        asset_id:
+          type: string
+        name:
+          type: string
+        model:
+          type: string
+        category:
+          type: string
+        purchase_date:
+          type: string
+          format: date
+        purchase_dept:
+          type: string
+        status:
+          type: string
+```
+
+---
+
+## README.md (brief)
+
+```
+# Asset Tracking & Allocation System
+
+Run backend:
+- Create .env with DATABASE_URL
+- cd backend
+- npm install
+- npx prisma migrate dev --name init
+- npm run dev
+
+Run frontend:
+- cd frontend
+- npm install
+- npm run dev
+```
+
+---
+
+## Next steps & customization tips
+- Add JWT auth middleware and RBAC checks on routes
+- Expand asset logs with typed enums and index critical fields
+- Add file upload for repair attachments
+- Implement bulk import (CSV) for procurement
+- Add WebSocket for real-time dashboard updates
+
+---
+
+*End of scaffold file.*

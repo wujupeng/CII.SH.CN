@@ -1,0 +1,148 @@
+/* Login组件样式 */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.login-form {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-form h2 {
+  margin: 0 0 30px 0;
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.error-message {
+  color: #f5222d;
+  font-size: 14px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-btn:hover:not(:disabled) {
+  background-color: #66b3ff;
+}
+
+.login-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.login-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 加载点动画 */
+.loading-dots {
+  display: inline-block;
+  width: 20px;
+  height: 16px;
+  margin-right: 8px;
+  position: relative;
+  vertical-align: middle;
+}
+
+.loading-dots::before,
+.loading-dots::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: white;
+  transform: translateY(-50%);
+}
+
+.loading-dots::before {
+  left: 0;
+  animation: dotPulse 1.4s infinite ease-in-out both;
+}
+
+.loading-dots::after {
+  left: 8px;
+  animation: dotPulse 1.4s infinite ease-in-out both 0.2s;
+}
+
+@keyframes dotPulse {
+  0%, 80%, 100% {
+    transform: translateY(-50%) scale(0);
+  }
+  40% {
+    transform: translateY(-50%) scale(1);
+  }
+}
+
+.login-tips {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.login-tips p {
+  margin: 5px 0;
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 480px) {
+  .login-form {
+    padding: 30px 20px;
+  }
+  
+  .login-form h2 {
+    font-size: 20px;
+  }
+}

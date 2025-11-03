@@ -1,0 +1,517 @@
+/* RepairManagement组件样式 */
+.repair-management {
+  color: #333;
+}
+
+.repair-management h2 {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  color: #333;
+}
+
+.repair-management h3 {
+  margin: 20px 0 15px 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.repair-management h4 {
+  margin: 15px 0 10px 0;
+  font-size: 16px;
+  color: #333;
+}
+
+/* 标签页 */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #666;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  color: #1890ff;
+}
+
+.tab-btn.active {
+  color: #1890ff;
+  border-bottom-color: #1890ff;
+}
+
+/* 标签页内容 */
+.tab-content {
+  min-height: 400px;
+}
+
+/* 按钮样式 */
+.primary-btn {
+  padding: 10px 20px;
+  background-color: #1890ff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.primary-btn:hover:not(:disabled) {
+  background-color: #40a9ff;
+}
+
+.primary-btn:disabled {
+  background-color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.secondary-btn {
+  padding: 10px 20px;
+  background-color: white;
+  color: #666;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.secondary-btn:hover {
+  color: #1890ff;
+  border-color: #1890ff;
+}
+
+/* 统计卡片 */
+.stats-section {
+  margin-bottom: 20px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.stat-card {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 600;
+  color: #1890ff;
+  margin-bottom: 5px;
+}
+
+.stat-value.completed {
+  color: #52c41a;
+}
+
+.stat-value.processing {
+  color: #faad14;
+}
+
+.stat-value.pending {
+  color: #fa8c16;
+}
+
+.stat-value.cost {
+  color: #f5222d;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 筛选区域 */
+.filter-section {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filter-row {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 150px;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.filter-group input,
+.filter-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* 表格样式 */
+.repair-table-container {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.repair-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.repair-table th,
+.repair-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.repair-table th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.repair-table td {
+  font-size: 14px;
+  color: #666;
+}
+
+.empty-row {
+  text-align: center !important;
+  color: #999 !important;
+  padding: 40px !important;
+}
+
+/* 状态标签 */
+.status-tag {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-pending {
+  background-color: #fff7e6;
+  color: #fa8c16;
+  border: 1px solid #ffd591;
+}
+
+.status-processing {
+  background-color: #e6f7ff;
+  color: #1890ff;
+  border: 1px solid #91d5ff;
+}
+
+.status-completed {
+  background-color: #f6ffed;
+  color: #52c41a;
+  border: 1px solid #b7eb8f;
+}
+
+.status-canceled {
+  background-color: #f5f5f5;
+  color: #8c8c8c;
+  border: 1px solid #d9d9d9;
+}
+
+/* 操作按钮 */
+.action-btn {
+  padding: 6px 12px;
+  margin-right: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.view-btn {
+  background-color: #1890ff;
+  color: white;
+}
+
+.view-btn:hover {
+  background-color: #40a9ff;
+}
+
+.status-btn {
+  background-color: #52c41a;
+  color: white;
+}
+
+.status-btn:hover {
+  background-color: #73d13d;
+}
+
+/* 表单样式 */
+.add-repair-form {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.form-section:last-child {
+  border-bottom: none;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-group {
+  flex: 1;
+}
+
+.form-group.full-width {
+  flex: 1 1 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-top: 20px;
+}
+
+/* 详情页样式 */
+.repair-detail {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.repair-basic-info p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.repair-basic-info strong {
+  color: #333;
+  margin-right: 10px;
+}
+
+.detail-content {
+  margin-top: 20px;
+}
+
+.detail-section {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.detail-section:last-child {
+  border-bottom: none;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+}
+
+.info-label {
+  font-size: 14px;
+  color: #666;
+  margin-right: 10px;
+  min-width: 80px;
+}
+
+.info-value {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.info-value.cost {
+  color: #f5222d;
+  font-weight: 600;
+}
+
+.description-box {
+  padding: 15px;
+  background-color: #fafafa;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.description-box p {
+  margin: 8px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.description-box strong {
+  color: #333;
+}
+
+.notes-box label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #666;
+}
+
+.notes-box textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.notes-box textarea:focus {
+  outline: none;
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.detail-actions-bottom {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .filter-row {
+    flex-direction: column;
+  }
+  
+  .filter-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .form-row {
+    flex-direction: column;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .detail-actions-bottom {
+    flex-wrap: wrap;
+  }
+  
+  .tabs {
+    overflow-x: auto;
+  }
+  
+  .tab-btn {
+    min-width: 100px;
+  }
+  
+  .repair-table-container {
+    overflow-x: auto;
+  }
+}
