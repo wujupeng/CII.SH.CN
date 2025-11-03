@@ -1,0 +1,62 @@
+# Dependency directories
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Production
+build/
+dist/
+target/
+
+# Misc
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS generated files
+Thumbs.db
+
+# Database files
+PostgreSQL/
+*.sql
+*.db
+*.sqlite
+
+# Java
+.m2/
+*.jar
+*.class
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary files
+*.tmp
+*.temp
+.cache
+
+# Package manager files
+package-lock.json
+yarn.lock
+poetry.lock
+composer.lock
